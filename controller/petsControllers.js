@@ -22,4 +22,17 @@ const postPet = async(req, res) => {
   }
 }
 
-export {getPets,postPet}
+const get_pet_id = async(req, res) => {
+    try {
+      const pet = await Pet.findById(id)
+      if (!pet) {
+        return res.status(400).json({ success: false })
+      }
+      res.status(200).json({ success: true, data: pet })
+    } catch (error) {
+      res.status(400).json({ success: false })
+    }
+}
+
+
+export {getPets,postPet, get_pet_id}

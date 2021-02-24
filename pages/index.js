@@ -2,9 +2,10 @@ import Link from 'next/link'
 import dbConnect from '../utils/dbConnect'
 import Pet from '../models/Pet'
 
-const Index = ({ pets }) => (
+const Index = ({ pets, url }) => (
   <>
     {/* Create a card for each pet */}
+    <h1>{url}</h1>
     {pets.map((pet) => (
       <div key={pet._id}>
         <div className="card">
@@ -50,7 +51,7 @@ const Index = ({ pets }) => (
 /* Retrieves pet(s) data from mongodb database */
 export async function getServerSideProps() {
   await dbConnect()
-
+  const url = process.env.NEXTAUTH_URL
   /* find all the data in our database */
   const result = await Pet.find({})
   const pets = result.map((doc) => {
@@ -59,7 +60,7 @@ export async function getServerSideProps() {
     return pet
   })
 
-  return { props: { pets: pets } }
+  return { props: { pets, url } }
 }
 
 export default Index
